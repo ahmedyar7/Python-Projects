@@ -1,0 +1,1 @@
+This is a small calculator project that can calculate two digits and subsequently perform further calculations based on the previous results. 
