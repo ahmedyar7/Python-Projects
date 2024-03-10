@@ -35,11 +35,10 @@ while is_game_on:
         scoreBoard.increaseScore()
 
     if snake.collisonWithWall():
-        is_game_on = False
-        scoreBoard.gameOver()
+        scoreBoard.reset()
+        snake.reset()
 
     if snake.collisionWithTail():
-        is_game_on = False
         scoreBoard.gameOver()
 
 
