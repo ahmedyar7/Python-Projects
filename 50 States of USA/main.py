@@ -1,5 +1,3 @@
-# TODO: Adding the score counter
-
 from turtle import Turtle, Screen
 import pandas
 
