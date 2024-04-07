@@ -13,27 +13,63 @@ SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 reps = 0
 timer = None
+# * ----------------------------- RESET MECHANISM -------------------------
+
+
+def reset_timer():
+    window.after_cancel(timer)
+    timer_label.config(text="Timer")
+    canvas.itemconfig(timer_text, text="00:00")
+    check_mark_label.config(text="")
+    global reps
+    reps = 0
 
 
 # * --------------------------- START TIMER ------------------------------
 def start_timer():
-    count_down(5 * 60)
+    global reps
+    reps += 1
+
+    work_seconds = WORK_MIN * 60
+    short_break_seconds = SHORT_BREAK_MIN * 60
+    long_break_seconds = LONG_BREAK_MIN * 60
+
+    count_down(work_seconds)
+
+    if reps % 8 == 0:
+        count_down(long_break_seconds)
+        timer_label.config(text="Long Break", fg=PINK)
+    elif reps % 2 == 0:
+        count_down(short_break_seconds)
+        timer_label.config(text="Short Break", fg=RED)
+    else:
+        count_down(work_seconds)
+        timer_label.config(text="Work", fg=GREEN)
 
 
-# * -------------------------------- COUNTDOWN MECHANISMS -------------------------------
+# * -------------------------------- COUNTDOWN MECHANISMS ------------------------
 def count_down(count):
-    count_minutes = math.floor(count / 60)
+    count_minutes = math.floor(round(count / 60))
     count_seconds = count % 60
 
-    if count_seconds < 10:
-        count_seconds = f"0:{count_seconds}"
+    if int(count_seconds) < 10:
+        count_seconds = f"0{count_seconds}"
 
     canvas.itemconfig(timer_text, text=f"{count_minutes}:{count_seconds}")
 
-    window.after(1000, count_down, count - 1)
+    if count > 0:
+        global timer
+        timer = window.after(1000, count_down, count - 1)
+    else:
+        start_timer()
+        mark = ""
+        work_session = math.floor(reps / 2)
+        for _ in range(work_session):
+            mark += "✔"
+        check_mark_label.config(text=mark)
 
 
-# * ---------------------------------- USER INTERFACE -----------------------------------------
+# * -------------------------------- USER INTERFACE -----------------------------
 
 window = Tk()
 window.title("Pomodoro Timer")
@@ -54,7 +90,7 @@ timer_label.grid(row=0, column=1)
 # * Buttons
 start_button = Button(text="START", highlightthickness=0, command=start_timer)
 start_button.grid(row=2, column=0)
-reset_button = Button(text="RESET", highlightthickness=0)
+reset_button = Button(text="RESET", highlightthickness=0, command=reset_timer)
 reset_button.grid(row=2, column=2)
 
 # * Checked mark
