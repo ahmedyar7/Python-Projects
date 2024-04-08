@@ -23,7 +23,7 @@ This is a simple password manager application built using Tkinter in Python. It 
 - It displays a logo using a `logo.png` file.
 - Users can also generate a random password using the "Generate" button.
 
-![Alt Text](/Password%20manager/randompass.png)
+![Password Manager](/Password%20manager/randompass.png)
 
 
 

@@ -52,16 +52,25 @@ def save():
             title="Error", message="None of the feilds could remain empty"
         )
     else:
-        with open("Password Manager/data.json", mode="r") as data_file:
-            # reading old data
-            data = json.load(data_file)
+        # Error handling
+        try:
+            with open("Password Manager/data.json", mode="r") as data_file:
+                # reading old data
+                data = json.load(data_file)
+
+        except FileNotFoundError:
+            with open("Password Manager/data.json", mode="w") as data_file:
+                json.dump(new_data, data_file, indent=4)
+
+        else:
             # changing it with new data
             data.update(new_data)
 
-        with open("Password Manager/data.json", mode="w") as data_file:
-            # update the file with new data
-            json.dump(data, data_file, indent=4)
+            with open("Password Manager/data.json", mode="w") as data_file:
+                # update the file with new data
+                json.dump(data, data_file, indent=4)
 
+        finally:
             website_entry.delete(0, END)
             password_entry.delete(0, END)
 
