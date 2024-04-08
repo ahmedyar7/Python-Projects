@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from random import *
+import json
 
 
 # * --------- CONSTANSTS ---------------- * #
@@ -14,7 +15,7 @@ def generate_passoword():
 
     letters = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm"
     digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
-    symbols = "!@#$%^&*()_+-=`~<>/?;\|"
+    symbols = "!@#$%^&*()_+-=`~<>/?;|"
 
     letters_list = list(letters)
     symbols_list = list(symbols)
@@ -39,21 +40,30 @@ def save():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+    new_data = {
+        website: {
+            "email": email,
+            "password": password,
+        }
+    }
 
     if len(website) == 0 or len(password) == 0:
         messagebox.showerror(
             title="Error", message="None of the feilds could remain empty"
         )
-
     else:
-        with open("Password Manager/data.txt", mode="a") as data_file:
-            data_file.write(f"{website} | {email} | {password} \n")
+        with open("Password Manager/data.json", mode="r") as data_file:
+            # reading old data
+            data = json.load(data_file)
+            # changing it with new data
+            data.update(new_data)
 
-            messagebox.askokcancel(
-                title="Confirm", message=" Are you sure of the following enteries"
-            )
-        website_entry.delete(0, END)
-        password_entry.delete(0, END)
+        with open("Password Manager/data.json", mode="w") as data_file:
+            # update the file with new data
+            json.dump(data, data_file, indent=4)
+
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
 
 
 # * ----------------------  User Interface  --------------------------
