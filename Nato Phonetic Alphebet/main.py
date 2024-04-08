@@ -10,6 +10,8 @@ while game_is_on:
 
     user_input = input("Enter the Word: ").upper()
 
+    # * Error Execption and handling:
+
     try:
         final_list = [phonetic_dict[letters] for letters in user_input]
     except KeyError:
