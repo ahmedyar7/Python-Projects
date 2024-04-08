@@ -7,6 +7,7 @@ import json
 # * --------- CONSTANSTS ---------------- * #
 my_email = "ahmedyar778@gmail.com"
 
+
 # * ------------- GENERATE RANDOM PASSWORD --------------- * #
 
 
@@ -52,10 +53,8 @@ def save():
             title="Error", message="None of the feilds could remain empty"
         )
     else:
-        # Error handling
         try:
             with open("Password Manager/data.json", mode="r") as data_file:
-                # reading old data
                 data = json.load(data_file)
 
         except FileNotFoundError:
@@ -63,16 +62,43 @@ def save():
                 json.dump(new_data, data_file, indent=4)
 
         else:
-            # changing it with new data
             data.update(new_data)
 
             with open("Password Manager/data.json", mode="w") as data_file:
-                # update the file with new data
                 json.dump(data, data_file, indent=4)
 
         finally:
             website_entry.delete(0, END)
             password_entry.delete(0, END)
+
+
+# * --------------- SEARCH PASSWORD ------------------------ #
+
+
+def search_password():
+    """This would search the password from the json file"""
+
+    website = website_entry.get()
+
+    try:
+        with open("Password Manager/data.json") as data_file:
+            data = json.load(data_file)
+
+    except FileNotFoundError:
+        messagebox.showerror(title="Error", message="No data file found")
+
+    else:
+        if website in data:
+            email = data[website]["email"]
+            password = data[website]["password"]
+
+            messagebox.showinfo(
+                title=website, message=f"Email: {email}\n Password: {password}"
+            )
+        else:
+            messagebox.showerror(
+                title="Error", message=f"The Details of the {website} donot exists"
+            )
 
 
 # * ----------------------  User Interface  --------------------------
@@ -98,15 +124,15 @@ password_label = Label(text="Password: ")
 password_label.grid(row=3, column=0)
 
 # * ---- Enteries ---- * #
-website_entry = Entry(width=35)
-website_entry.grid(row=1, column=1, columnspan=2)
+website_entry = Entry(width=25)
+website_entry.grid(row=1, column=1)
 website_entry.focus()
 
 email_entry = Entry(width=35)
 email_entry.grid(row=2, column=1, columnspan=2)
 email_entry.insert(END, my_email)
 
-password_entry = Entry(width=21)
+password_entry = Entry(width=25)
 password_entry.grid(row=3, column=1)
 
 # * ----- Buttons ------ * #
@@ -116,5 +142,9 @@ generate_pass_button.grid(row=3, column=2)
 
 add_password_button = Button(text="Add", width=36, command=save)
 add_password_button.grid(row=4, column=1, columnspan=2)
+
+search_button = Button(text="Search", command=search_password)
+search_button.grid(row=1, column=2)
+
 
 window.mainloop()
