@@ -7,6 +7,7 @@ BACKGROUND_COLOR = "#B1DDC6"
 current_card = {}
 to_learn = {}
 
+# -------- Exception handling ------:
 try:
     data = pandas.read_csv("Flashcard/data/words_to_learn.csv")
 
@@ -28,8 +29,8 @@ def next_card():
     window.after_cancel(flip_timer)
 
     current_card = random.choice(to_learn)
-    canvas.itemconfig(card_title, text="French")
-    canvas.itemconfig(card_word, text=current_card["French"])
+    canvas.itemconfig(card_title, text="French", fill="black")
+    canvas.itemconfig(card_word, text=current_card["French"], fill="black")
     canvas.itemconfig(card_image, image=card_front_image)
 
     flip_timer = window.after(3000, func=flip_card)
@@ -41,8 +42,8 @@ def next_card():
 def flip_card():
     """This function would flip the card after the 3 seconds to show the English translation of the word"""
 
-    canvas.itemconfig(card_title, text="English")
-    canvas.itemconfig(card_word, text=current_card["English"])
+    canvas.itemconfig(card_title, text="English", fill="white")
+    canvas.itemconfig(card_word, text=current_card["English"], fill="white")
 
     canvas.itemconfig(card_image, image=card_back_image)
 
