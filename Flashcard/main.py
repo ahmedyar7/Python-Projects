@@ -12,6 +12,7 @@ try:
 
 except FileNotFoundError:
     original_words = pandas.read_csv("Flashcard/data/french_words.csv")
+    to_learn = original_words.to_dict(orient="records")
 
 else:
     to_learn = data.to_dict(orient="records")
