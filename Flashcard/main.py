@@ -3,13 +3,19 @@ import pandas
 import random
 
 
-BACKGROUND_COLOR = "#79DD5B"
-
-
-data = pandas.read_csv("Flashcard/data/french_words.csv")
-to_learn = data.to_dict(orient="records")
-
+BACKGROUND_COLOR = "#B1DDC6"
 current_card = {}
+to_learn = {}
+
+try:
+    data = pandas.read_csv("Flashcard/data/words_to_learn.csv")
+
+except FileNotFoundError:
+    original_words = pandas.read_csv("Flashcard/data/french_words.csv")
+
+else:
+    to_learn = data.to_dict(orient="records")
+
 
 # * -------------------- NEXT CARD ---------------- #
 
@@ -49,7 +55,7 @@ def is_known():
     to_learn.remove(current_card)
     data = pandas.DataFrame(to_learn)
 
-    data.to_csv("Flashcard/data/words_to_learn.csv")
+    data.to_csv("Flashcard/data/words_to_learn.csv", index=False)
 
     next_card()
 
