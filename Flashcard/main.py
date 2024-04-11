@@ -32,12 +32,26 @@ def next_card():
 
 
 def flip_card():
-    """This function would flip the card after the 3 seconds to show the english translation of the word"""
+    """This function would flip the card after the 3 seconds to show the English translation of the word"""
 
     canvas.itemconfig(card_title, text="English")
     canvas.itemconfig(card_word, text=current_card["English"])
 
     canvas.itemconfig(card_image, image=card_back_image)
+
+
+# * ---------------------- KNOWN WORDS --------------- #
+
+
+def is_known():
+    """This function would work when we click the right button or the known button"""
+
+    to_learn.remove(current_card)
+    data = pandas.DataFrame(to_learn)
+
+    data.to_csv("Flashcard/data/words_to_learn.csv")
+
+    next_card()
 
 
 # * ----------------------------------------- USER INTEFACE --------------------------------------- #
@@ -66,7 +80,7 @@ canvas.grid(row=0, column=0, columnspan=2)
 right_image = PhotoImage(file="Flashcard/images/right.png")
 wrong_image = PhotoImage(file="Flashcard/images/wrong.png")
 
-known_button = Button(image=right_image, highlightthickness=0, command=next_card)
+known_button = Button(image=right_image, highlightthickness=0, command=is_known)
 known_button.grid(row=1, column=0)
 
 unknown_button = Button(image=wrong_image, highlightthickness=0, command=next_card)
