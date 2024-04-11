@@ -11,21 +11,24 @@ to_learn = data.to_dict(orient="records")
 
 current_card = {}
 
-# * --------------------   NEXT CARD ---------------- #
+# * -------------------- NEXT CARD ---------------- #
 
 
 def next_card():
     """This give funtionality to the buttons to display the next card"""
-    global current_card
+    global current_card, flip_timer
+
+    window.after_cancel(flip_timer)
+
     current_card = random.choice(to_learn)
     canvas.itemconfig(card_title, text="French")
     canvas.itemconfig(card_word, text=current_card["French"])
     canvas.itemconfig(card_image, image=card_front_image)
 
+    flip_timer = window.after(3000, func=flip_card)
+
 
 # * --------------------- FLIP CARD ----------------------- #
-
-# TODO: Make the automatic 3 seconds timer suspend and not work untill I stop to one and only one card only
 
 
 def flip_card():
@@ -35,7 +38,6 @@ def flip_card():
     canvas.itemconfig(card_word, text=current_card["English"])
 
     canvas.itemconfig(card_image, image=card_back_image)
-    window.after(3000, func=flip_card)
 
 
 # * ----------------------------------------- USER INTEFACE --------------------------------------- #
@@ -45,7 +47,7 @@ window = Tk()
 window.title("FlashCard Game")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR, highlightthickness=0)
 
-window.after(3000, func=flip_card)
+flip_timer = window.after(3000, func=flip_card)
 
 canvas = Canvas(height=526, width=800)
 
