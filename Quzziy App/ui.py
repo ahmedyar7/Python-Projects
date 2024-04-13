@@ -52,9 +52,16 @@ class QuizInterface:
         """Return the Question to canvas"""
 
         self.canvas.config(bg="white")
-
-        self.q_text = self.quiz_brain.next_question()
-        self.canvas.itemconfig(self.question_text, text=self.q_text)
+        if self.quiz_brain.still_has_questions():
+            self.q_text = self.quiz_brain.next_question()
+            self.canvas.itemconfig(self.question_text, text=self.q_text)
+            self.score_label.config(text=f"Score: {self.quiz_brain.score}")
+        else:
+            self.ending_text = f"The Quiz Ended \n Final Score: {self.quiz_brain.score}"
+            self.canvas.itemconfig(self.question_text, text=self.ending_text)
+            self.score_label.config(bg=THEME_COLOR, fg=THEME_COLOR)
+            self.true_button.config(state="disabled")
+            self.false_button.config(state="disabled")
 
     def true_pressed(self) -> None:
         self.is_right = self.quiz_brain.check_answer("True")
