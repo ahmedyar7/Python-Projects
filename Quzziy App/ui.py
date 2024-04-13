@@ -34,11 +34,12 @@ class QuizInterface:
         false_img = PhotoImage(file="Quzziy App/images/false.png")
 
         self.true_button = Button(
-            image=true_img, highlightthickness=0, padx=20, pady=20
+            image=true_img, highlightthickness=0, command=self.true_pressed
         )
         self.true_button.grid(row=2, column=0)
+
         self.false_button = Button(
-            image=false_img, highlightthickness=0, padx=20, pady=20
+            image=false_img, highlightthickness=0, command=self.false_pressed
         )
         self.false_button.grid(row=2, column=1)
 
@@ -50,5 +51,22 @@ class QuizInterface:
     def get_next_question(self) -> str:
         """Return the Question to canvas"""
 
+        self.canvas.config(bg="white")
+
         self.q_text = self.quiz_brain.next_question()
         self.canvas.itemconfig(self.question_text, text=self.q_text)
+
+    def true_pressed(self) -> None:
+        self.is_right = self.quiz_brain.check_answer("True")
+        self.check_ans(self.is_right)
+
+    def false_pressed(self) -> None:
+        self.is_right = self.quiz_brain.check_answer("False")
+        self.check_ans(self.is_right)
+
+    def check_ans(self, is_right: bool) -> None:
+        if is_right:
+            self.canvas.config(bg="green")
+        else:
+            self.canvas.config(bg="red")
+        self.window.after(1500, func=self.get_next_question)
