@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv, find_dotenv
 import requests
+from twilio.rest import Client
 
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path)
@@ -26,6 +27,20 @@ response = requests.get(
 )
 data = response.json()
 
+will_rain: bool = False
+client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
 for hour_data in data["list"]:
-    print(hour_data["weather"][0]["id"])
+    weather_code = hour_data["weather"][0]["id"]
+
+    if weather_code < 700:
+        will_rain = True
+
+if will_rain:
+    message = client.messages.create(
+        from_=TWILIO_PHONENUMBER,
+        to=MY_PHONENUMBER,
+        body="Rain Expected, Don't Forget to Bring Umbella 🌧☔",
+    )
+
+print(message.status)
