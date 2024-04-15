@@ -28,4 +28,6 @@ parameters = {
 article = get(url=API_ENDPOINT, params=parameters)
 article.raise_for_status
 
-article_data = article.json()
+article_data = article.json().get("articles")
+first_three_articles = article_data[:3]
+print(len(first_three_articles))
