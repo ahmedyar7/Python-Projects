@@ -1,93 +1,91 @@
 import requests
-from os import getenv
-from dotenv import find_dotenv, load_dotenv
 from datetime import datetime as dt
-
-# Getting hold of environment variables
-dotenv_path = find_dotenv()
-load_dotenv(dotenv_path)
-
-# Constants and environment variables
-TOKEN = getenv("TOKEN")
-USERNAME = getenv("USER_NAME")
-GRAPH_ID = getenv("GRAPH_ID")
-HEADERS = {
-    "X-USER-TOKEN": TOKEN,
-}
-API_ENDPOINT = "https://pixe.la/v1/users"
 
 
 class HabitTracker:
 
-    def create_user():
+    def __init__(self, TOKEN, USERNAME, GRAPH_ID, HEADERS, API_ENDPOINT):
 
-        user_data = {
-            "token": TOKEN,
-            "username": USERNAME,
+        # Consturctor Variable:
+        self.TOKEN = TOKEN
+        self.USERNAME = USERNAME
+        self.GRAPH_ID = GRAPH_ID
+        self.HEADERS = HEADERS
+        self.API_ENDPOINT = API_ENDPOINT
+
+        # Constructor Function:
+        # self.create_user()
+        # self.create_graph()
+
+    def create_user(self):
+
+        self.user_data = {
+            "token": self.TOKEN,
+            "username": self.USERNAME,
             "agreeTermsOfService": "yes",
             "notMinor": "yes",
         }
 
-        response = requests.post(url=f"{API_ENDPOINT}", json=user_data)
-        return response
+        self.response = requests.post(url=f"{self.API_ENDPOINT}", json=self.user_data)
+        print(self.response.text)
 
-    def create_graph():
+    def create_graph(self):
         """This function would create the graph"""
 
         graph_endpoint_data = {
-            "X-USER-TOKEN": TOKEN,
-            "id": GRAPH_ID,
+            "X-USER-TOKEN": self.TOKEN,
+            "id": self.GRAPH_ID,
             "name": "Reading",
             "unit": "commit",
             "type": "int",
             "color": "ajisai",
         }
 
-        graph_endpoint = f"{API_ENDPOINT}/{USERNAME}/graphs"
+        graph_endpoint = f"{self.API_ENDPOINT}/{self.USERNAME}/graphs"
 
         response = requests.post(
-            url=graph_endpoint, json=graph_endpoint_data, headers=HEADERS
+            url=graph_endpoint, json=graph_endpoint_data, headers=self.HEADERS
         )
-        return response
+        print(response.text)
 
-    def todays_date() -> str:
+    def todays_date(self) -> str:
+        """This function would return the current date"""
+
         now_time = dt.now()
-        today = now_time.strftime(format="%Y%m%d")
+        today = str(now_time.strftime(format="%Y%m%d"))
         return today
 
-    def create_pixel():
+    def create_pixel(self):
+        "This function would create pixel onto graph"
 
         pixel_endpoint_data = {
-            "date": todays_date(),
+            "date": self.todays_date(),
             "quantity": "5",
         }
 
-        pixel_endpoint = f"{API_ENDPOINT}/{USERNAME}/graphs/{GRAPH_ID}"
+        pixel_endpoint = f"{self.API_ENDPOINT}/{self.USERNAME}/graphs/{self.GRAPH_ID}"
         response = requests.post(
-            url=pixel_endpoint, json=pixel_endpoint_data, headers=HEADERS
+            url=pixel_endpoint, json=pixel_endpoint_data, headers=self.HEADERS
         )
-        return response
+        print(response.text)
 
-    def update_pixel(amount):
+    def update_pixel(self, amount):
         """This will update the graph based upon provided amount"""
 
         update_pixel_data = {
-            "quantity": "22",
+            "quantity": amount,
         }
 
-        update_pixel_endpoint = (
-            f"{API_ENDPOINT}/{USERNAME}/graphs/{GRAPH_ID}/{todays_date()}"
-        )
+        update_pixel_endpoint = f"{self.API_ENDPOINT}/{self.USERNAME}/graphs/{self.GRAPH_ID}/{self.todays_date()}"
 
         response = requests.put(
-            url=update_pixel_endpoint, json=update_pixel_data, headers=HEADERS
+            url=update_pixel_endpoint, json=update_pixel_data, headers=self.HEADERS
         )
+        print(response.text)
 
-    def delete_pixel():
+    def delete_pixel(self):
         """This will delete the pixel from the Graph"""
 
-        delete_pixel_endpoint = (
-            f"{API_ENDPOINT}/{USERNAME}/graphs/{GRAPH_ID}/{todays_date()}"
-        )
-        response = requests.delete(url=delete_pixel_endpoint, headers=HEADERS)
+        delete_pixel_endpoint = f"{self.API_ENDPOINT}/{self.USERNAME}/graphs/{self.GRAPH_ID}/{self.todays_date()}"
+        response = requests.delete(url=delete_pixel_endpoint, headers=self.HEADERS)
         return response
