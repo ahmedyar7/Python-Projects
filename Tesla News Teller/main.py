@@ -1,9 +1,7 @@
 import os
 from dotenv import load_dotenv, find_dotenv
 from requests import get
-import smtplib
-from html import unescape
-
+from twilio.rest import Client
 
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path)
@@ -40,3 +38,11 @@ article_title = article_data[daily].get("title")
 article_description = article_data[daily].get("description")
 
 MESSAGE = f"Source:{source_name}\nAuthor:{article_author}\nTitle:{article_title}\nDescription:{article_description}"
+
+client = Client(ACCOUNT_SID, AUTH_TOKEN)
+message = client.messages.create(
+    from_=TWILIO_PHONENUMBER,
+    to=MY_PHONENUMBER,
+    body=MESSAGE,
+)
+print(message.status)
