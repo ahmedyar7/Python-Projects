@@ -42,8 +42,6 @@ graph_endpoint = f"{api_endpoint}/{USERNAME}/graphs"
 # response = requests.post(url=graph_endpoint, json=graph_endpoint_data, headers=HEADERS)
 # print(response.text)
 
-# TODO : Make a pixel to the graph
-
 
 now_time = dt.now()
 today = now_time.strftime(format="%Y%m%d")
@@ -53,5 +51,18 @@ pixel_endpoint_data = {
     "quantity": "5",
 }
 
-pixel_endpoint = f"{api_endpoint}/{USERNAME}/graphs/{GRAPH_ID}"
-response = requests.post(url=pixel_endpoint, json=pixel_endpoint_data, headers=HEADERS)
+# pixel_endpoint = f"{api_endpoint}/{USERNAME}/graphs/{GRAPH_ID}"
+# response = requests.post(url=pixel_endpoint, json=pixel_endpoint_data, headers=HEADERS)
+
+# TODO: Update pixel:
+
+update_pixel_data = {
+    "quantity": "22",
+}
+
+update_pixel_endpoint = f"{api_endpoint}/{USERNAME}/graphs/{GRAPH_ID}/{today}"
+
+response = requests.put(
+    url=update_pixel_endpoint, json=update_pixel_data, headers=HEADERS
+)
+print(response.text)
