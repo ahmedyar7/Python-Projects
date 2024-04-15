@@ -26,19 +26,15 @@ article = get(url=API_ENDPOINT, params=parameters)
 article.raise_for_status
 
 article_data = article.json().get("articles")
-# first_three_articles = article_data[:3]
+first_three_articles = article_data[:3]
 
-# TODO : Get the  articles[0].source{"id": null,"name": "Digital Trends"}
-# TODO : Get the  articles[0].source and the author title and description
+# TODO Import the smtplib and make smtp live server and send mail
 
-# TODO : But first get hold of only 1 article data
 
-source_name = article_data[0].get("source").get("name")
-article_author = article_data[0].get("author")
-article_title = article_data[0].get("title")
-article_description = article_data[0].get("description")
+for i in range(3):
+    source_name = article_data[i].get("source").get("name")
+    article_author = article_data[i].get("author")
+    article_title = article_data[i].get("title")
+    article_description = article_data[i].get("description")
 
-print(source_name)
-print(article_author)
-print(article_title)
-print(article_description)
+    message = f"Source: {source_name} \n Author: {article_author} \n Title: {article_title} \n Description: {article_description}"
