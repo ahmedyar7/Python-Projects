@@ -6,7 +6,7 @@ class HabitTracker:
 
     def __init__(self, TOKEN, USERNAME, GRAPH_ID, HEADERS, API_ENDPOINT):
 
-        # Consturctor Variable:
+        # Consturctor Constants:
         self.TOKEN = TOKEN
         self.USERNAME = USERNAME
         self.GRAPH_ID = GRAPH_ID
@@ -14,8 +14,8 @@ class HabitTracker:
         self.API_ENDPOINT = API_ENDPOINT
 
         # Constructor Function:
-        # self.create_user()
-        # self.create_graph()
+        self.create_user()
+        self.create_graph()
 
     def create_user(self):
 
@@ -27,7 +27,6 @@ class HabitTracker:
         }
 
         self.response = requests.post(url=f"{self.API_ENDPOINT}", json=self.user_data)
-        print(self.response.text)
 
     def create_graph(self):
         """This function would create the graph"""
@@ -41,12 +40,13 @@ class HabitTracker:
             "color": "ajisai",
         }
 
-        graph_endpoint = f"{self.API_ENDPOINT}/{self.USERNAME}/graphs"
+        self.graph_endpoint = f"{self.API_ENDPOINT}/{self.USERNAME}/graphs"
 
-        response = requests.post(
-            url=graph_endpoint, json=graph_endpoint_data, headers=self.HEADERS
+        self.response = requests.post(
+            url=self.graph_endpoint,
+            json=graph_endpoint_data,
+            headers=self.HEADERS,
         )
-        print(response.text)
 
     def todays_date(self) -> str:
         """This function would return the current date"""
@@ -64,28 +64,32 @@ class HabitTracker:
         }
 
         pixel_endpoint = f"{self.API_ENDPOINT}/{self.USERNAME}/graphs/{self.GRAPH_ID}"
-        response = requests.post(
-            url=pixel_endpoint, json=pixel_endpoint_data, headers=self.HEADERS
+        self.response = requests.post(
+            url=pixel_endpoint,
+            json=pixel_endpoint_data,
+            headers=self.HEADERS,
         )
-        print(response.text)
 
     def update_pixel(self, amount):
         """This will update the graph based upon provided amount"""
 
-        update_pixel_data = {
+        self.update_pixel_data = {
             "quantity": amount,
         }
 
         update_pixel_endpoint = f"{self.API_ENDPOINT}/{self.USERNAME}/graphs/{self.GRAPH_ID}/{self.todays_date()}"
 
-        response = requests.put(
-            url=update_pixel_endpoint, json=update_pixel_data, headers=self.HEADERS
+        self.response = requests.put(
+            url=update_pixel_endpoint,
+            json=self.update_pixel_data,
+            headers=self.HEADERS,
         )
-        print(response.text)
 
     def delete_pixel(self):
         """This will delete the pixel from the Graph"""
 
-        delete_pixel_endpoint = f"{self.API_ENDPOINT}/{self.USERNAME}/graphs/{self.GRAPH_ID}/{self.todays_date()}"
-        response = requests.delete(url=delete_pixel_endpoint, headers=self.HEADERS)
-        return response
+        self.delete_pixel_endpoint = f"{self.API_ENDPOINT}/{self.USERNAME}/graphs/{self.GRAPH_ID}/{self.todays_date()}"
+        self.response = requests.delete(
+            url=self.delete_pixel_endpoint,
+            headers=self.HEADERS,
+        )

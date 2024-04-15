@@ -19,9 +19,9 @@ habit_tracker = HabitTracker(
     TOKEN=TOKEN,
     USERNAME=USERNAME,
     GRAPH_ID=GRAPH_ID,
-    GRAPH_ID=HEADERS,
+    HEADERS=HEADERS,
     API_ENDPOINT=API_ENDPOINT,
 )
 
 
-ui = UserInterface()
+# ui = UserInterface()
