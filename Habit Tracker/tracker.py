@@ -1,6 +1,5 @@
 import requests
 from datetime import datetime as dt
-import webbrowser
 
 
 class HabitTracker:
@@ -62,7 +61,7 @@ class HabitTracker:
 
         pixel_endpoint_data = {
             "date": self.todays_date(),
-            "quantity": "5",
+            "quantity": "51",
         }
 
         pixel_endpoint = f"{self.API_ENDPOINT}/{self.USERNAME}/graphs/{self.GRAPH_ID}"

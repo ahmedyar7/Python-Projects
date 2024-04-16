@@ -79,7 +79,7 @@ class UserInterface:
         )  # Add right padding, align left
 
         def handle_button_click():
-            self.value = self.habit_entry.get()  # Get the value from the entry field
+            self.value = self.habit_entry.get()
             habit_tracker.update_pixel(amount=self.value)
 
         # Create the buttons
@@ -112,9 +112,6 @@ class UserInterface:
             sticky="ew",
         )  # Add right padding
 
-        # self.handle_button_click()
-
-        # Start the main event loop
         self.window.mainloop()
 
 
@@ -124,17 +121,3 @@ def visit_url():
     url = URL
 
     webbrowser.open_new(url=url)
-
-
-# Update the pixel with the value
-
-
-ui = UserInterface()
-
-
-# Update the pixel with the value
-
-
-# Create the user interface instance
-
-# print(.habit_entry.get())
