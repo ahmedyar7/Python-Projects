@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime as dt
+import webbrowser
 
 
 class HabitTracker:
@@ -16,6 +17,7 @@ class HabitTracker:
         # Constructor Function:
         self.create_user()
         self.create_graph()
+        self.todays_date()
 
     def create_user(self):
 
