@@ -24,4 +24,4 @@ habit_tracker = HabitTracker(
 )
 
 
-# ui = UserInterface()
+ui = UserInterface()
