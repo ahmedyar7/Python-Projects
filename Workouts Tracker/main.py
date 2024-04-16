@@ -14,8 +14,8 @@ WORKOUTS_API_KEY = getenv("WORKOUTS_API_KEY")
 SHEETY_API_TOKEN = getenv("SHEETY_API_TOKEN")
 SHEETY_API_URL = getenv("SHEETY_API_URL")
 
-# print(SHEETY_API_URL)
-# print(SHEETY_API_TOKEN)
+print(SHEETY_API_URL)
+print(SHEETY_API_TOKEN)
 
 # Environment Variable -> Personal
 WEIGHT_KG = getenv("WEIGHT_KG")
@@ -43,18 +43,17 @@ def add_workout(text):
     }
 
     response = requests.post(url=WORKOUT_URL, json=body, headers=headers)
-    return response.json()["exercises"]
-    # return workout
+    workout = response.json()["exercises"]
+    print(workout)
+    return workout
 
-
-print(add_workout(text="I ran 3 miles"))
 
 # data_dict = {
 #     "tag_id": 317,
 #     "user_input": "ran",
 #     "duration_min": 10.01,
 #     "met": 9.8,
-#     "nf_calories": 114.45,
+#     "nf_calories": 81.75,
 #     "photo": {
 #         "highres": "https://d2xdmhkmkbyw75.cloudfront.net/exercise/317_highres.jpg",
 #         "thumb": "https://d2xdmhkmkbyw75.cloudfront.net/exercise/317_thumb.jpg",
@@ -66,7 +65,8 @@ print(add_workout(text="I ran 3 miles"))
 #     "benefits": "None",
 # }
 
-# TODO: Add the worout in the google sheet by using the shetty:
+
+# TODO : Make a funtion that would take the json data and the feed to the google sheet with the help of sheety api
 
 
 def add_entry(entry):
@@ -75,17 +75,15 @@ def add_entry(entry):
         "workout": {
             "date": dt.now().strftime("%Y-%m-%d"),
             "time": dt.now().strftime("%I-%M-%p"),
-            "exercise": entry["user_input"].capitalize(),
-            "duration": f"{entry['duration_min']} min",
-            "calories": f"{entry['nf_calories']} kcal",
+            "exercise": entry["user_input"],
+            "duration": entry["duration_min"],
+            "calories": entry["nf_calories"],
         }
     }
-    print(body)
 
-    headers = {"Authorization": f"Bearer {SHEETY_API_TOKEN}"}
-    response = requests.post(url=SHEETY_API_URL, json=body, headers=headers)
+    HEADERS = {"Authorization": f"Bearer {SHEETY_API_TOKEN}"}
+
+    response = requests.post(url=SHEETY_API_URL, json=body, headers=HEADERS)
     response.raise_for_status()
+
     print(response.content)
-
-
-# add_entry(entry=data_dict)
