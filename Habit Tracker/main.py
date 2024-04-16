@@ -14,7 +14,7 @@ USERNAME = getenv("USER_NAME")
 GRAPH_ID = getenv("GRAPH_ID")
 HEADERS = {"X-USER-TOKEN": TOKEN}
 API_ENDPOINT = "https://pixe.la/v1/users"
-URL = getenv("URL")
+
 
 habit_tracker = HabitTracker(
     TOKEN=TOKEN,
