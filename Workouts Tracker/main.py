@@ -3,6 +3,8 @@ from os import getenv
 import requests
 from datetime import datetime as dt
 
+
+# * -------------------------------- ENVIRONMENT VARIABLES & CONSTANTS ----------------------------------------#
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path)
 
@@ -20,15 +22,17 @@ WEIGHT_KG = getenv("WEIGHT_KG")
 HEIGHT_CM = getenv("HEIGHT_CM")
 AGE = getenv("AGE")
 
-
 # CONSTANTS:
 WORKOUT_URL = "https://trackapi.nutritionix.com/v2/natural/exercise"
+
+
+# * ------------------- ADD WORKOUTS ------------------ #
 
 
 while True:
 
     print("What exercies you did: ")
-    my_workout = input(" >> ")
+    my_workout = input(">> ")
 
     if my_workout == "":
         print("What exercies you did: ")
@@ -56,6 +60,9 @@ def add_workout(text):
     return workout
 
 
+# * ------------------ ADD TO GOOGLE SHEETS ------------- #
+
+
 def add_entry(entry):
 
     body = {
@@ -72,8 +79,6 @@ def add_entry(entry):
 
     response = requests.post(url=SHEETY_API_URL, json=body, headers=HEADERS)
     response.raise_for_status()
-
-    print(response.content)
 
 
 workout_list = add_workout(text=my_workout)
