@@ -28,7 +28,6 @@ while time() <= stop_time:
     if timeout <= time():
         click_and_buy()
         timeout = time() + 10
-        timeout += 1
 
 cookies_sec = driver.find_element(by=By.CSS_SELECTOR, value="#cps")
 print(f"cookies/sec = {cookies_sec}")
