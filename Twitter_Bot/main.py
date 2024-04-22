@@ -25,6 +25,8 @@ download_speed = 0
 DESIRED_UPLOAD_SPEED = 20
 DESIRED_DOWNLOAD_SPEED = 22
 
+ISP = "YOUR ISP"
+
 
 class TwitterNetBot:
 
@@ -103,9 +105,9 @@ class TwitterNetBot:
             value="//*[@id='react-root']/div/div/div[2]/main/div/div/div/div[1]/div/div[3]/div/div[2]/div[1]/div/div/div/div[2]/div[2]/div[2]/div/div/div/div",
         )
 
-        global DESIRED_UPLOAD_SPEED, DESIRED_DOWNLOAD_SPEED
+        global DESIRED_UPLOAD_SPEED, DESIRED_DOWNLOAD_SPEED, ISP
 
-        tweet_msg = f"My Internet \n Dowload Speed: {download_speed} \n Upload Speed: {upload_speed}\n Desired Download Speed: {DESIRED_DOWNLOAD_SPEED}\n Desired Upload Speed: {DESIRED_UPLOAD_SPEED}"
+        tweet_msg = f"Dear {ISP} My Internet \n Dowload Speed: {download_speed} \n Upload Speed: {upload_speed}\n Desired Download Speed: {DESIRED_DOWNLOAD_SPEED}\n Desired Upload Speed: {DESIRED_UPLOAD_SPEED} \n Please do something"
 
         tweet_textbox.send_keys(tweet_msg)
         post_button.send_keys(Keys.ENTER)
