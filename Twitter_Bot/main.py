@@ -22,6 +22,9 @@ driver = webdriver.Chrome(options=chrome_options)
 upload_speed = 0
 download_speed = 0
 
+DESIRED_UPLOAD_SPEED = 20
+DESIRED_DOWNLOAD_SPEED = 22
+
 
 class TwitterNetBot:
 
@@ -86,7 +89,29 @@ class TwitterNetBot:
         password_login.send_keys(TWITTER_PASSWORD)
         password_login.send_keys(Keys.ENTER)
 
+    def tweet():
+        """This will write the tweet"""
+
+        time.sleep(10)
+
+        tweet_textbox = driver.find_element(
+            by=By.XPATH,
+            value="//*[@id='react-root']/div/div/div[2]/main/div/div/div/div[1]/div/div[3]/div/div[2]/div[1]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div/div/div/div/label/div[1]/div/div/div/div/div/div[2]/div",
+        )
+        post_button = driver.find_element(
+            by=By.XPATH,
+            value="//*[@id='react-root']/div/div/div[2]/main/div/div/div/div[1]/div/div[3]/div/div[2]/div[1]/div/div/div/div[2]/div[2]/div[2]/div/div/div/div",
+        )
+
+        global DESIRED_UPLOAD_SPEED, DESIRED_DOWNLOAD_SPEED
+
+        tweet_msg = f"My Internet \n Dowload Speed: {download_speed} \n Upload Speed: {upload_speed}\n Desired Download Speed: {DESIRED_DOWNLOAD_SPEED}\n Desired Upload Speed: {DESIRED_UPLOAD_SPEED}"
+
+        tweet_textbox.send_keys(tweet_msg)
+        post_button.send_keys(Keys.ENTER)
+
 
 bot = TwitterNetBot
-# bot.get_internet_speed()
+bot.get_internet_speed()
 bot.twitter_login()
+bot.tweet()
