@@ -29,8 +29,12 @@ class ZillowScraper:
                 r_prices.replace("+", "").replace("/mo", "").replace("1 bd", "")
             )
 
-        print(self.rental_prices)
+        # Rental Address Links
+        self.all_links = self.soup.select(selector=".StyledPropertyCardDataWrapper a")
+        self.rental_links = []
+        for links in self.all_links:
+            href = links["href"]
+            self.rental_links.append(href)
 
 
 scraper = ZillowScraper()
-# <span data-test="property-card-price" class="PropertyCardWrapper__StyledPriceLine">$2,895+/mo</span>
