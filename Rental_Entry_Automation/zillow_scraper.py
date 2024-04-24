@@ -18,6 +18,8 @@ class ZillowScraper:
             r_address = address.text
             self.rental_address.append(r_address.replace(" | ", "").strip())
 
+        self.total_rental_addresses = len(self.rental_address)
+
         # Rental Prices;
         self.all_prices = self.soup.find_all(
             name="span", class_="PropertyCardWrapper__StyledPriceLine"
@@ -35,6 +37,3 @@ class ZillowScraper:
         for links in self.all_links:
             href = links["href"]
             self.rental_links.append(href)
-
-
-scraper = ZillowScraper()

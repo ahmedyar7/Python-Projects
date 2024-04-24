@@ -1,13 +1,17 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
+from zillow_scraper import ZillowScraper
 
 GOOGLE_FORMS_LINK = "https://docs.google.com/forms/d/e/1FAIpQLSd92K14BKZ3pWoT1sV3T5o7QqXK8e5-rRcjkJ8MLvzBhNF64g/viewform?usp=sf_link"
 
 
 class AutomateGoogleForms:
 
-    def __init__(self) -> None:
+    def __init__(self, zillow_scraper: ZillowScraper) -> None:
+
+        # Compostion of ZilloScraper Class:
+        self.zillo_scraper = zillow_scraper
 
         # Chrome Setup:
         self.chrome_options = webdriver.ChromeOptions()
@@ -15,36 +19,36 @@ class AutomateGoogleForms:
 
         # Selenium Setup:
         self.driver = webdriver.Chrome(options=self.chrome_options)
-        self.driver.get(url=GOOGLE_FORMS_LINK)
 
-        # Address Input:
-        sleep(7)
-        self.address_input = self.driver.find_element(
-            by=By.XPATH,
-            value="//*[@id='mG61Hd']/div[2]/div/div[2]/div[1]/div/div/div[2]/div/div[1]/div/div[1]/input",
-        )
-        self.price_input = self.driver.find_element(
-            by=By.XPATH,
-            value="//*[@id='mG61Hd']/div[2]/div/div[2]/div[2]/div/div/div[2]/div/div[1]/div/div[1]/input",
-        )
-        self.address_link_input = self.driver.find_element(
-            by=By.XPATH,
-            value="//*[@id='mG61Hd']/div[2]/div/div[2]/div[3]/div/div/div[2]/div/div[1]/div/div[1]/input",
-        )
-        self.submit_buttons = self.driver.find_element(
-            by=By.XPATH,
-            value="//*[@id='mG61Hd']/div[2]/div/div[3]/div[1]/div[1]/div",
-        )
-        self.address_input.send_keys("Ahmed Yar")
+        for n in range(self.zillo_scraper.total_rental_addresses):
 
-        # Price Input
-        self.price_input.send_keys("Ahmed Yar")
+            self.driver.get(url=GOOGLE_FORMS_LINK)
+            sleep(5)
 
-        # Address Link Input:
-        self.address_link_input.send_keys("Ahmed Yar")
+            # Finding HTML Elements:
 
-        # Submit Button:
-        self.submit_buttons.click()
+            self.address_input = self.driver.find_element(
+                by=By.XPATH,
+                value="//*[@id='mG61Hd']/div[2]/div/div[2]/div[1]/div/div/div[2]/div/div[1]/div/div[1]/input",
+            )
+            self.price_input = self.driver.find_element(
+                by=By.XPATH,
+                value="//*[@id='mG61Hd']/div[2]/div/div[2]/div[2]/div/div/div[2]/div/div[1]/div/div[1]/input",
+            )
+            self.address_link_input = self.driver.find_element(
+                by=By.XPATH,
+                value="//*[@id='mG61Hd']/div[2]/div/div[2]/div[3]/div/div/div[2]/div/div[1]/div/div[1]/input",
+            )
+            self.submit_buttons = self.driver.find_element(
+                by=By.XPATH,
+                value="//*[@id='mG61Hd']/div[2]/div/div[3]/div[1]/div[1]/div",
+            )
 
+            # Filling HTML Elements:
 
-forms = AutomateGoogleForms()
+            self.address_input.send_keys(self.zillo_scraper.rental_address[n])
+            self.price_input.send_keys(self.zillo_scraper.rental_prices[n])
+            self.address_link_input.send_keys(self.zillo_scraper.rental_links[n])
+            self.submit_buttons.click()
+
+        self.driver.quit()
