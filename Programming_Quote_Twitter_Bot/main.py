@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from os import getenv
 from dotenv import find_dotenv, load_dotenv
 
+# Twitter Credetntials:
 load_dotenv(dotenv_path=find_dotenv())
 USERNAME = getenv("USER_NAME")
 PASSWORD = getenv("PASSWORD")
@@ -31,6 +32,9 @@ class TwitterBot:
         self.options.add_experimental_option("detach", True)
         self.driver = webdriver.Chrome(options=self.options)
         self.wait = self.driver.implicitly_wait(30)
+
+        self.tweet_login()
+        self.tweet_quote()
 
     def tweet_login(self) -> None:
         """This method would  use selenium to tweet the random quote that is generated"""
@@ -76,13 +80,14 @@ class TwitterBot:
         self.wait
         self.post_button = self.driver.find_element(
             by=By.XPATH,
-            value="/html/body/div[1]/div/div/div[2]/main/div/div/div/div[1]/div/div[3]/div/div[2]/div[1]/div/div/div/div[2]/div[2]/div[2]/div/div/div/div",
+            value="/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div[2]/div[1]/div/div/div/div[2]/div[2]/div[2]/div/div/div/div/div/span/span",
         )
         self.post_button.click()
 
+        self.driver.quit()
 
-quotes = Quotes()
 
-bot = TwitterBot(quotes)
-bot.tweet_login()
-bot.tweet_quote()
+if __name__ == "__main__":
+
+    quotes = Quotes()
+    bot = TwitterBot(quotes)
