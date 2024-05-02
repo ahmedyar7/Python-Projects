@@ -45,12 +45,6 @@ class InstagramFollowerBot:
 
         self.wait
 
-        # not_now_button = self.driver.find_element(
-        #     by=By.CLASS_NAME,
-        #     value="_a9--._ap36._a9_0",
-        # )
-        # not_now_button.click()
-
     def get_follow(self):
         """This will follow the instagram account"""
 
