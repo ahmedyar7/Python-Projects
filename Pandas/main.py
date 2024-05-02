@@ -56,3 +56,30 @@ newdf = pd.DataFrame(np.random.rand(334, 5), index=np.arange(334))
 
 ## Transpose:
 # print(newdf.T)
+
+## Sorting the index:
+
+# By rows:
+# print(newdf.sort_index(axis=0, ascending=False))
+
+# By Column:
+# print(newdf.sort_index(axis=1, ascending=False))
+
+# newdf2 = newdf.copy()
+# newdf[0][0] = 3424222
+
+# print(newdf2)
+
+
+## Proper way of setting the value to the dataframe:
+# change = newdf.loc[0, 0] = 324
+# print(newdf)
+
+## Changing the column name:
+# newdf.columns = list("ABCDE")
+# print(newdf)
+
+
+## Dropping the row:
+newdf.drop(4, axis=1)
+print(newdf)
