@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 
 
 class RecipeRecommendation:
@@ -13,21 +14,30 @@ class RecipeRecommendation:
         self.driver = webdriver.Chrome(options=self.chrome_options)
         self.wait = self.driver.implicitly_wait(30)
 
-        self.driver.get(url="https://www.allrecipes.com/")
+        self.driver.get(url="https://www.foodnetwork.com/")
         self.wait
 
+        # Add Handling:
+        try:
+            self.ads = self.driver.find_element(
+                by=By.XPATH, value="/html/body/div[1]/div/div/form/div[1]/a[2]"
+            )
+            self.ads.click()
+        except NoSuchElementException:
+            pass
+
+        self.wait
         # Input Ingredients:
         self.input_ingredients = self.driver.find_element(
             by=By.XPATH,
-            value="/html/body/header/div[1]/div[3]/ul/li[1]/div/form/div/input",
+            value="/html/body/section/div[1]/header/section[2]/div/div[10]/section/form/div/span/input",
         )
         self.input_ingredients.send_keys("rice and chicken")
-        self.ingredient_button = self.driver.find_element(
-            by=By.XPATH,
-            value="/html/body/header/div[1]/div[3]/ul/li[1]/div/form/div/button",
-        )
-        self.ingredient_button.click()
+        self.input_ingredients.send_keys(Keys.ENTER)
+
+        self.recipies_url = self.driver.current_url
+        print(self.recipies_url)
 
 
-recipie = RecipeRecommendation()
+recipie_recommendation = RecipeRecommendation()
 # /html/body/header/div[1]/div[3]/ul/li[1]/div/form/div/button
