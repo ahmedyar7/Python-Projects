@@ -4,21 +4,19 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
-
+from time import sleep
 
 load_dotenv(dotenv_path=find_dotenv())
 
 
-# Environment Variables => Twitter
+## Environment Variables => Twitter
 TWITTER_EMAIL = getenv("TWITTER_EMAIL")
 TWITTER_USERNAME = getenv("TWITTER_USERNAME")
 TWITTER_PASSWORD = getenv("TWITTER_PASSWORD")
 
-upload_speed = 0
-download_speed = 0
 
-DESIRED_UPLOAD_SPEED = 20
-DESIRED_DOWNLOAD_SPEED = 22
+## Constants
+INTERNET_SPEED = "20Mpbs"
 
 ISP = "YOUR ISP"
 
@@ -32,8 +30,19 @@ class TwitterBot:
         self.driver = webdriver.Chrome(options=self.chrome_options)
         self.wait = self.driver.implicitly_wait(30)
 
+        self.find_internet_speed()
         self.twitter_login()
         self.tweet()
+
+    def find_internet_speed(self):
+
+        self.wait = self.driver.implicitly_wait(30)
+        self.driver.get("https://fast.com/")
+
+        sleep(7)
+        self.internet_speed = self.driver.find_element(
+            by=By.XPATH, value="/html/body/div/div[2]/div[1]/div[2]/div/div[1]"
+        ).text
 
     def twitter_login(self):
         """This would login to one's twitter account"""
@@ -85,12 +94,14 @@ class TwitterBot:
             value="//*[@id='react-root']/div/div/div[2]/main/div/div/div/div[1]/div/div[3]/div/div[2]/div[1]/div/div/div/div[2]/div[2]/div[2]/div/div/div/div",
         )
 
-        global DESIRED_UPLOAD_SPEED, DESIRED_DOWNLOAD_SPEED, ISP
+        global INTERNET_SPEED, ISP
 
-        tweet_msg = f"Dear {ISP} My Internet \n Dowload Speed: {self.download_speed} \n Upload Speed: {self.upload_speed}\n Desired Download Speed: {DESIRED_DOWNLOAD_SPEED}\n Desired Upload Speed: {DESIRED_UPLOAD_SPEED} \n Please do something"
+        tweet_msg = f"Dear {ISP}\n My Promised Internet Speed is {INTERNET_SPEED}, and I am getting {self.internet_speed}, Please do something about it"
 
         tweet_textbox.send_keys(tweet_msg)
         post_button.send_keys(Keys.ENTER)
+
+        self.driver.quit()
 
 
 bot = TwitterBot()
