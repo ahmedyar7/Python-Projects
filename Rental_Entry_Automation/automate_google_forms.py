@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from time import sleep
 from zillow_scraper import ZillowScraper
+from time import sleep
 
 GOOGLE_FORMS_LINK = "https://docs.google.com/forms/d/e/1FAIpQLSd92K14BKZ3pWoT1sV3T5o7QqXK8e5-rRcjkJ8MLvzBhNF64g/viewform?usp=sf_link"
 
@@ -19,11 +19,12 @@ class AutomateGoogleForms:
 
         # Selenium Setup:
         self.driver = webdriver.Chrome(options=self.chrome_options)
+        self.wait = self.driver.implicitly_wait(30)
 
         for n in range(self.zillo_scraper.total_rental_addresses):
 
             self.driver.get(url=GOOGLE_FORMS_LINK)
-            sleep(5)
+            sleep(3)
 
             # Finding HTML Elements:
 
