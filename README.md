@@ -39,3 +39,7 @@ To get started, simply clone this repository:
 
 ```bash
 git clone https://github.com/ahmedyar7/my-python-project.git
+``` 
+
+## LICENSE
+[MIT LICENSE](LICENSE)
