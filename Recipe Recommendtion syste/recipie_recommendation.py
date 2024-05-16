@@ -38,6 +38,15 @@ class RecipeRecommendation:
         self.recipies_url = self.driver.current_url
         print(self.recipies_url)
 
+    def get_recipies(self):
+        self.recipies = []
+        self.all_recipies = self.driver.find_elements(
+            by=By.CSS_SELECTOR, value="div .m-MediaBlock__a-HeadlineText"
+        )
+        for recps in self.recipies:
+            self.recipies.append(recps.text)
+        print(self.recipies)
+
 
 recipie_recommendation = RecipeRecommendation()
-# /html/body/header/div[1]/div[3]/ul/li[1]/div/form/div/button
+recipie_recommendation.get_recipies()
