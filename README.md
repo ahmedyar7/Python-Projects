@@ -39,7 +39,14 @@ To get started, simply clone this repository:
 
 ```bash
 git clone https://github.com/ahmedyar7/my-python-project.git
-``` 
+```
+
+## Installation:
+- Python
+- Python IDE
+```
+pip install -r requirements.txt
+```
 
 ## LICENSE
 [MIT LICENSE](LICENSE)
