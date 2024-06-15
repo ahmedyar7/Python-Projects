@@ -12,8 +12,8 @@ This Python program creates a fun and interactive game to test your knowledge of
 
 - Python 3
 - Necessary libraries:
-    - Turtle
-    - Pandas (install using `pip install turtle pandas`)
+  - Turtle
+  - Pandas (install using `pip install turtle pandas`)
 
 ## Files:
 
