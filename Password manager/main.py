@@ -54,17 +54,17 @@ def save():
         )
     else:
         try:
-            with open("Password Manager/data.json", mode="r") as data_file:
+            with open("data.json", mode="r") as data_file:
                 data = json.load(data_file)
 
         except FileNotFoundError:
-            with open("Password Manager/data.json", mode="w") as data_file:
+            with open("Password data.json", mode="w") as data_file:
                 json.dump(new_data, data_file, indent=4)
 
         else:
             data.update(new_data)
 
-            with open("Password Manager/data.json", mode="w") as data_file:
+            with open("data.json", mode="w") as data_file:
                 json.dump(data, data_file, indent=4)
 
         finally:
@@ -81,7 +81,7 @@ def search_password():
     website = website_entry.get()
 
     try:
-        with open("Password Manager/data.json") as data_file:
+        with open("data.json") as data_file:
             data = json.load(data_file)
 
     except FileNotFoundError:
@@ -109,7 +109,7 @@ window.config(padx=50, pady=50)
 
 # * --- Screen --- * #
 canvas = Canvas(height=200, width=200)
-password_logo = PhotoImage(file="Password Manager/logo.png")
+password_logo = PhotoImage(file="logo.png")
 canvas.create_image(100, 100, image=password_logo)
 canvas.grid(row=0, column=1)
 

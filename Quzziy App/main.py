@@ -11,5 +11,6 @@ for question in question_data:
     question_bank.append(new_question)
 
 
-quiz = QuizBrain(question_bank)
-quiz_ui = QuizInterface(quiz)
+if __name__ == "__main__":
+    quiz = QuizBrain(question_bank)
+    quiz_ui = QuizInterface(quiz)

@@ -30,8 +30,8 @@ class QuizInterface:
 
         # * Buttons:
 
-        true_img = PhotoImage(file="Quzziy App/images/true.png")
-        false_img = PhotoImage(file="Quzziy App/images/false.png")
+        true_img = PhotoImage(file="images/true.png")
+        false_img = PhotoImage(file="images/false.png")
 
         self.true_button = Button(
             image=true_img, highlightthickness=0, command=self.true_pressed
