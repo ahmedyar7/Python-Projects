@@ -13,7 +13,6 @@ class GraphTraversal:
                 ("Oradea", "Sibiu"),
                 ("Zerind", "Arad"),
                 ("Arad", "Sibiu"),
-                ("Arad", "Timisoara"),
                 ("Timisoara", "Lugoj"),
                 ("Lugoj", "Mehadia"),
                 ("Mehadia", "Drobeta"),
