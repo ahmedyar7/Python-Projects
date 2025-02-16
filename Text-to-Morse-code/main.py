@@ -1,8 +1,3 @@
-# TODO: Figure out the morse code equvilent of ABC then store them in a dictionary
-# TODO: Figure out a way to convert text to morse code
-# TODO: Figure out a way to convert morse code back to text
-
-
 import re
 
 MORSE_CODE = {
@@ -35,7 +30,6 @@ MORSE_CODE = {
 }
 
 MORSE_CODE_REVERSED = {values: key for key, values in MORSE_CODE.items()}
-print(MORSE_CODE_REVERSED)
 
 # Text for morse code
 text = input("Enter a Key: ").upper()
@@ -51,26 +45,30 @@ def text_to_morse(key: str) -> str:
             print(f"Key = {char} was not found")
 
     # converting array element to string
-    result = "".join(map(str, output))
+    result = " ".join(map(str, output))
     return result
 
 
-morse = input("Enter a morse: ").upper()
-morse = re.sub(r"\s+", "", morse)
+morse_code = text_to_morse(key=text)
 
 
-def morse_to_text(key: str) -> str:
-    output = []
-    for char in key:
-        if char in MORSE_CODE_REVERSED:
-            output.append(MORSE_CODE_REVERSED[char])
-        else:
-            print(f"Key = {char} was not found")
-
-    # converting array element to string
-    result = "".join(map(str, output))
-    return result
+morse_word = morse_code.split("   ")
 
 
-morse_2_text = morse_to_text(key=morse)
-print(f"Morse to Text = {morse_2_text}")
+def morse_to_text(morse_word: str) -> str:
+    decoded_words = []
+
+    for words in morse_word:
+        morse_letters = words.split(" ")
+        decoded_letters = []
+
+        for letters in morse_letters:
+            if letters in MORSE_CODE_REVERSED:
+                decoded_letters.append(MORSE_CODE_REVERSED[letters])
+            else:
+                print(f"The morse code was not found {letters}")
+
+        decoded_words.append("".join(decoded_letters))
+
+    morse_decoded = " ".join(decoded_words)
+    return morse_decoded
