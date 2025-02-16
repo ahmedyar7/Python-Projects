@@ -1,102 +1,152 @@
 import re
-
+import time
 import winsound
 
 
-MORSE_CODE = {
+MORSE_CODE: dict[str, str] = {
     "A": ".-",
-    "N": "-.",
     "B": "-...",
-    "O": "---",
     "C": "-.-.",
-    "P": ".--.",
     "D": "-..",
-    "Q": "--.-",
     "E": ".",
-    "R": ".-.",
     "F": "..-.",
-    "S": "...",
     "G": "--.",
-    "T": "-",
     "H": "....",
-    "U": "..-",
     "I": "..",
-    "V": "...-",
     "J": ".---",
-    "W": ".--",
     "K": "-.-",
-    "X": "-..-",
     "L": ".-..",
-    "Y": "-.--",
     "M": "--",
+    "N": "-.",
+    "O": "---",
+    "P": ".--.",
+    "Q": "--.-",
+    "R": ".-.",
+    "S": "...",
+    "T": "-",
+    "U": "..-",
+    "V": "...-",
+    "W": ".--",
+    "X": "-..-",
+    "Y": "-.--",
     "Z": "--..",
+    "1": ".----",
+    "2": "..---",
+    "3": "...--",
+    "4": "....-",
+    "5": ".....",
+    "6": "-....",
+    "7": "--...",
+    "8": "---..",
+    "9": "----.",
+    "0": "-----",
+    " ": "/",
 }
 
-MORSE_CODE_REVERSED = {values: key for key, values in MORSE_CODE.items()}
+MORSE_CODE_REVERSED: dict[str, str] = {
+    values: key for key, values in MORSE_CODE.items()
+}
 
-# Standards for morse sound
+# Constants for Sound
 FREQUENCY = 800
-DOT_DURATION = 60 * 1
-DASH_DURATION = 60 * 3
+DOT_DURATION = 100
+DASH_DURATION = 300
+LETTER_PAUSE = 0.3
+WORD_PAUSE = 0.7
 
 
-def dot_sound():
-    winsound.Beep(FREQUENCY, DOT_DURATION)
+def play_morse_sound(morse: str) -> str:
+    """This would play morse sound according to the conventions
 
+    Args:
+        morse (morse): Actual morse code
+    """
 
-def dash_sound():
-    winsound.Beep(FREQUENCY, DASH_DURATION)
+    for symbols in morse:
+        if symbols == ".":
+            winsound.Beep(FREQUENCY, DOT_DURATION)
 
+        elif symbols == "-":
+            winsound.Beep(FREQUENCY, DASH_DURATION)
 
-# Text for morse code
-# text = ""
-text = input("Enter a Key: ").upper()
-text = re.sub(r"\s+", "", text)  # removing any white spaces
+        elif symbols == " ":
+            time.sleep(LETTER_PAUSE)
 
+        elif symbols == "/":
+            time.sleep(WORD_PAUSE)
 
-def text_to_morse(key: str) -> str:
-    output = []
-    for char in key:
-        if char in MORSE_CODE:
-            output.append(MORSE_CODE[char])
         else:
-            print(f"Key = {char} was not found")
-
-    # converting array element to string
-    result = " ".join(map(str, output))
-    return result
+            print(f"Unknown Morse Symbol {symbols}")
 
 
-morse_code = text_to_morse(key=text)
+def text_to_morse(text: str) -> str:
+    """This function converts English text to morse code
+
+    Args:
+        text (str): English Text
+
+    Returns:
+        str: Morse code Equvilent
+    """
+
+    # Normalize spaces
+    text = re.sub(r"\s+", " ", text.upper().strip())
+
+    morse = "".join(MORSE_CODE.get(char, "?") for char in text)
+    return morse
 
 
-def morse_to_text(morse_word: str) -> str:
-    morse_word = morse_code.split("   ")
+def morse_to_text(morse: str) -> str:
+    """This would convert morse code into string
+        and subsequently plays the sound
+
+    Args:
+        morse (str): Morse code
+
+    Returns:
+        str: English text
+    """
+
+    words = morse.strip().split(" / ")
     decoded_words = []
 
-    for words in morse_word:
-        morse_letters = words.split(" ")
-        decoded_letters = []
+    for word in words:
+        letters = word.split()
 
-        for letters in morse_letters:
-            if letters in MORSE_CODE_REVERSED:
+        for letter in letters:
+            decoded_word = "".join(MORSE_CODE_REVERSED.get(letter, "?"))
+            decoded_words.append(decoded_word)
 
-                # Logic for playing sound
-                for symbols in letters:
-                    if symbols == ".":
-                        dot_sound()
-
-                    if symbols == "-":
-                        dash_sound()
-
-                decoded_letters.append(MORSE_CODE_REVERSED[letters])
-            else:
-                print(f"The morse code was not found {letters}")
-
-        decoded_words.append("".join(decoded_letters))
-
-    morse_decoded = " ".join(decoded_words)
-    return morse_decoded
+    return " ".join(decoded_words)
 
 
-print(morse_to_text(morse_word=morse_code))
+def main():
+    """
+    Main function to handle user input and process Morse Code conversion.
+    """
+    while True:
+        choice = input(
+            "\nChoose:\n1 - Text to Morse\n2 - Morse to Text\n3 - Exit\nEnter choice: "
+        )
+
+        if choice == "1":
+            text = input("\nEnter text: ")
+            morse_code = text_to_morse(text)
+            print("\nMorse Code:", morse_code)
+            play_morse_sound(morse_code)
+
+        elif choice == "2":
+            morse = input("\nEnter Morse Code (use '/' for spaces between words): ")
+            text = morse_to_text(morse)
+            print("\nDecoded Text:", text)
+
+        elif choice == "3":
+            print("Goodbye!")
+            break
+
+        else:
+            print("Invalid choice! Please enter 1, 2, or 3.")
+
+
+if __name__ == "__main__":
+    main()
