@@ -1,3 +1,7 @@
+"""
+    This is the source code for the Text-to-Morse-code Convertor
+"""
+
 import re
 import time
 import winsound
@@ -55,7 +59,7 @@ LETTER_PAUSE = 0.3
 WORD_PAUSE = 0.7
 
 
-def play_morse_sound(morse: str) -> str:
+def play_morse_sound(morse: str) -> None:
     """This would play morse sound according to the conventions
 
     Args:
